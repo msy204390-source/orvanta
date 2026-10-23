@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<style>:root{color-scheme:light}body{margin:0}</style>
+<title>Orvanta</title>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@400;600;700&display=swap">
+<style>
+/* Layout: one calm column. Hero with a hub-and-ring drawing, then the Hub demo, nine departments and the promises we keep. */
+:root {
+  --bg: #EDF0F3;
+  --surface: #FFFFFF;
+  --fg: #0E1B2B;
+  --muted: #53627A;
+  --line: #CDD5DF;
+  --accent: #0A6B6B;
+  --accent-ink: #FFFFFF;
+  --signal: #B87410;
+  --ok: #1B7A45;
+  --font-display: "Readex Pro", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans Arabic", "Readex Pro", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A121C; --surface: #111C2A; --fg: #E5ECF3; --muted: #93A3B8; --line: #25344A;
+    --accent: #4FC3B5; --accent-ink: #06201D; --signal: #E3A646; --ok: #5CC98B; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A121C; --surface: #111C2A; --fg: #E5ECF3; --muted: #93A3B8; --line: #25344A;
+  --accent: #4FC3B5; --accent-ink: #06201D; --signal: #E3A646; --ok: #5CC98B; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 880px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.25; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.mono { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.label { font-family: var(--font-data); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 16px; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: .02em; display: flex; align-items: center; gap: 10px; }
+.brand svg { width: 26px; height: 26px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pill { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 16px; font-size: 14px; }
+
+.hero { display: grid; gap: 24px; padding-block: 16px 40px; align-items: center; }
+@media (min-width: 720px) { .hero { grid-template-columns: 1.1fr .9fr; } }
+.hero h1 { font-size: clamp(30px, 7vw, 48px); font-weight: 700; }
+.hero p.lead { color: var(--muted); font-size: 17px; margin-top: 14px; max-width: 52ch; }
+.target { margin-top: 22px; display: inline-flex; flex-direction: column; gap: 2px; border-inline-start: 3px solid var(--signal); padding-inline-start: 14px; }
+.target b { font-family: var(--font-data); font-size: 28px; font-weight: 500; }
+.target span { color: var(--muted); font-size: 14px; max-width: 40ch; }
+.ring { width: 100%; max-width: 360px; margin-inline: auto; }
+.ring circle.node { fill: var(--surface); stroke: var(--accent); stroke-width: 2; }
+.ring circle.core { fill: var(--accent); }
+.ring line, .ring circle.orbit { stroke: var(--line); fill: none; stroke-width: 1.5; }
+.ring text { fill: var(--accent-ink); font-family: var(--font-data); font-size: 13px; text-anchor: middle; }
+.ring text.n { fill: var(--fg); font-size: 11px; }
+
+section { padding-block: 32px; border-top: 1px solid var(--line); }
+section > h2 { font-size: clamp(22px, 5vw, 30px); }
+section > p.sub { color: var(--muted); margin-top: 8px; max-width: 60ch; }
+
+.hub { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 4px 14px; font-size: 14px; }
+.chip:hover { border-color: var(--accent); }
+.hubform { display: flex; gap: 8px; flex-wrap: wrap; }
+.hubform input { flex: 1 1 220px; min-width: 0; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+.go { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 6px; padding: 10px 20px; font-weight: 600; }
+ol.plan { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 0; }
+ol.plan li { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; padding-block: 12px; border-top: 1px solid var(--line); }
+ol.plan li:first-child { border-top: 0; }
+.tag { font-family: var(--font-data); font-size: 12px; border-radius: 4px; padding: 2px 8px; white-space: nowrap; border: 1px solid currentColor; }
+.tag.auto { color: var(--ok); }
+.tag.approve { color: var(--signal); }
+.tag.expert { color: var(--muted); }
+.note { color: var(--muted); font-size: 13px; margin-top: 12px; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; margin-top: 10px; }
+summary { list-style: none; cursor: pointer; padding: 14px 16px; display: flex; gap: 12px; align-items: center; font-family: var(--font-display); font-weight: 600; }
+summary::-webkit-details-marker { display: none; }
+summary .idx { font-family: var(--font-data); color: var(--accent); font-weight: 500; min-width: 2ch; }
+summary::after { content: "+"; margin-inline-start: auto; font-family: var(--font-data); color: var(--muted); }
+details[open] summary::after { content: "−"; }
+details ul { margin: 0; padding: 0 16px 16px; padding-inline-start: 44px; color: var(--muted); display: grid; gap: 4px; }
+details .why { padding: 0 16px 8px; padding-inline-start: 44px; font-size: 14px; color: var(--fg); }
+
+.row { display: grid; gap: 6px; }
+.row .top { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; }
+.row .top b { font-family: var(--font-data); font-weight: 500; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.out { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.out div { border-top: 2px solid var(--line); padding-top: 8px; }
+.out b { display: block; font-family: var(--font-data); font-size: 22px; font-weight: 500; }
+.out span { font-size: 13px; color: var(--muted); }
+.bar { height: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--signal); width: 0; transition: width .3s; }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+
+
+.promises { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+.promises li { padding-inline-start: 16px; border-inline-start: 2px solid var(--accent); }
+footer { padding-top: 28px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+
+.nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav a { color: var(--fg); text-decoration: none; font-size: 14px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 14px; white-space: nowrap; }
+.nav a:hover { border-color: var(--accent); }
+a.cta { display: inline-block; margin-top: 22px; text-decoration: none; }
+.steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 36px 1fr; gap: 12px; padding-block: 14px; border-top: 1px solid var(--line); counter-increment: s; }
+.steps li::before { content: counter(s); font-family: var(--font-data); color: var(--accent); font-size: 20px; }
+.steps h3 { font-size: 17px; }
+.steps p { color: var(--muted); font-size: 15px; margin-top: 2px; }
+.plans { margin-top: 18px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 420px)); }
+.plan-card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.plan-card.main { border-color: var(--accent); border-width: 2px; }
+.plan-card h3 { font-size: 18px; }
+.plan-card .price { font-family: var(--font-data); font-size: 30px; font-weight: 500; }
+.plan-card .price small { font-size: 14px; color: var(--muted); }
+.trial { align-self: flex-start; font-family: var(--font-data); font-size: 12px; color: var(--ok); border: 1px solid currentColor; border-radius: 4px; padding: 2px 8px; }
+.plan-card p { color: var(--muted); font-size: 15px; }
+.plan-card ul { margin: 0; padding: 0; padding-inline-start: 18px; display: grid; gap: 4px; font-size: 15px; }
+.contact { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.contact .num { font-family: var(--font-data); font-size: 20px; direction: ltr; unicode-bidi: isolate; user-select: all; }
+a.go { text-decoration: none; display: inline-block; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="var(--accent)" stroke-width="2.5"/><circle cx="16" cy="16" r="4.5" fill="var(--signal)"/></svg>
+      Orvanta
+    </div>
+    <button class="pill" id="langBtn" type="button" aria-label="Language">EN</button>
+  </header>
+  <nav class="nav" id="nav"></nav>
+
+  <div class="hero">
+    <div>
+      <h1 data-i="h1"></h1>
+      <p class="lead" data-i="lead"></p>
+      <a class="go cta" href="#hub" data-i="cta"></a>
+    </div>
+    <svg class="ring" id="ring" viewBox="0 0 320 320" role="img" aria-label="Orvanta Hub"></svg>
+  </div>
+
+  <section id="hub">
+    <h2 data-i="hubT"></h2>
+    <p class="sub" data-i="hubS"></p>
+    <div class="hub">
+      <div class="chips" id="chips"></div>
+      <form class="hubform" id="hubForm">
+        <input id="goal" type="text" autocomplete="off">
+        <button class="go" type="submit" data-i="build"></button>
+      </form>
+      <ol class="plan" id="plan"></ol>
+      <p class="note" data-i="hubNote"></p>
+    </div>
+  </section>
+
+  <section id="depts">
+    <h2 data-i="deptT"></h2>
+    <p class="sub" data-i="deptS"></p>
+    <div id="deptList"></div>
+  </section>
+
+  <section id="how">
+    <h2 data-i="howT"></h2>
+    <ol class="steps" id="howList"></ol>
+  </section>
+
+  <section id="pricing">
+    <h2 data-i="priceT"></h2>
+    <p class="sub" data-i="priceS"></p>
+    <div class="plans" id="planList"></div>
+  </section>
+
+  <section id="faq">
+    <h2 data-i="faqT"></h2>
+    <div id="faqList"></div>
+  </section>
+
+  <section id="contact">
+    <h2 data-i="contactT"></h2>
+    <p class="sub" data-i="contactS"></p>
+    <div class="contact">
+      <span class="num">+963 997 179 644</span>
+      <a class="go" href="https://wa.me/963997179644" target="_blank" rel="noopener" data-i="wa"></a>
+      <button class="pill" id="copyBtn" type="button" data-i="copy"></button>
+    </div>
+  </section>
+
+  <section id="rules">
+    <h2 data-i="rulesT"></h2>
+    <ul class="promises" id="rulesList"></ul>
+  </section>
+
+  <footer data-i="foot"></footer>
+</div>
+
+<script>
+var L = {
+ar: {
+ h1: "Orvanta: منظومة أعمال عالمية بالذكاء الاصطناعي",
+ lead: "الذكاء الاصطناعي، البرمجة، الأتمتة، التسويق، التصميم والأمن الرقمي في منصة واحدة. الخدمات تشتغل مع بعضها وتعطي العميل نتائج يقدر يقيسها.",
+
+ contactT: "تواصل معنا", contactS: "اكتب لنا على واتساب وبنرد عليك.", wa: "راسلنا على واتساب", copy: "نسخ الرقم", copied: "تم النسخ",
+ cta: "جرّب المركز الذكي", howT: "كيف نشتغل", priceT: "الأسعار", priceS: "جرّب أول 3 أيام مجاناً، وبعدها 15$ بالشهر.", trial: "أول 3 أيام مجاناً", faqT: "أسئلة شائعة",
+ nav: [["#hub","المركز الذكي"],["#depts","الأقسام"],["#how","كيف نشتغل"],["#pricing","الأسعار"],["#faq","الأسئلة"],["#contact","تواصل"]],
+ how: [["احكي لنا هدفك","اكتب شو بدك تحقق، متجر، خدمة عملاء، أو تطبيق."],["نرتب لك الخطة","المركز يوزع المهام على الأقسام المناسبة ويحدد شو آلي وشو بيحتاج موافقتك."],["ننفذ وتراقب","بتتابع كل خطوة، وبتقدر توقف أي عملية بأي لحظة."],["نحسّن من البيانات","نعدل الخطة بناءً على النتائج الفعلية."]],
+ pricing: [["الخدمة الاحترافية","15","/شهر","كل ما تحتاجه لتشغيل عملك بالذكاء الاصطناعي.",["وكلاء ذكاء اصطناعي لخدمة العملاء والمبيعات","أتمتة ذكية للمهام المتكررة","قاعدة معرفة من مستندات عملك","صلاحيات ومراجعة بشرية عند الحاجة"],"جرّب مجاناً 3 أيام",1]],
+ faq: [["هل تضمنون زيادة المبيعات؟","لا. نقدم تحليلاً وخدمات قابلة للقياس ونحسّن بناءً على النتائج."],["هل القرارات الحساسة تتم آلياً؟","لا. التحويلات المالية والقرارات الحساسة بتحتاج موافقتك وضوابط واضحة."],["كيف تتم المدفوعات؟","عبر مزود دفع مناسب لبلد العميل ونشاطه."],["شو اللغات المدعومة؟","العربية والإنجليزية حالياً، والباقي حسب الطلب."]],
+ hubT: "Orvanta Intelligence Hub", hubS: "العميل يكتب هدفه، والمركز يرتب له خطة تمر بالأقسام المناسبة ويوضح شو بينفذ آلياً وشو بيحتاج موافقته أو مختص.",
+ build: "رتّب الخطة", ph: "اكتب هدفك، مثلاً: أريد إطلاق متجر إلكتروني", hubNote: "هذا مثال توضيحي للفكرة، مو نظام شغال بعد.",
+ deptT: "تسعة أقسام، منظومة واحدة", deptS: "نبدأ بالأكثر طلباً وقابلية للبيع، ونضيف الباقي على مراحل.",
+ rulesT: "ما نلتزم فيه", foot: "Orvanta. مرحلة التأسيس. المحتوى رؤية وخطة عمل وليس عرضاً تجارياً نهائياً.",
+ aTag: "آلي", pTag: "بموافقتك", eTag: "مختص",
+ chips: ["متجر عناية بالبشرة في أوروبا", "خدمة عملاء آلية لمطعم"],
+ depts: [
+  ["الذكاء الاصطناعي المتقدم","المحرك الأساسي: وكلاء متخصصون يتبادلون المهام بصلاحيات ومراجعة بشرية.",["بناء وكلاء ذكاء اصطناعي","خدمة عملاء على مدار الساعة","مساعد مبيعات ومتابعة العملاء","قاعدة معرفة من مستندات الشركة","ترجمة وتوطين المحتوى"]],
+  ["البرمجة والتطوير الرقمي","منتجات رقمية كاملة. نحدد ما ننفذه فعلياً قبل عرضه للبيع.",["مواقع ومتاجر إلكترونية","لوحات تحكم وأنظمة CRM","ربط التطبيقات عبر API","اختبار وتحسين الأداء والصيانة"]],
+  ["التسويق والنمو","تحليل وخدمات قابلة للقياس، بدون وعود بمبيعات مضمونة.",["استراتيجية وخطط تسويق","محتوى وحملات إعلانية","SEO وصفحات الهبوط","تحليل المنافسين وتقارير الأداء"]],
+  ["الأتمتة الذكية","من الأقسام اللي بدنا نتميز فيها. العميل يراقب ويوقف أي عملية.",["تصنيف الاستفسارات وتوجيه الطلبات","رسائل متابعة وفق قواعد العميل","تقارير دورية تلقائية","مزامنة البيانات بين التطبيقات"]],
+  ["الاستشارات وتطوير الأعمال","للعميل اللي ما بيعرف شو الأداة اللي بيحتاجها.",["تحليل نموذج العمل","دراسات جدوى أولية","تخطيط التحول الرقمي","تقارير تنفيذية للإدارة"]],
+  ["التصميم والإبداع","نوضح ما أنتجه الذكاء الاصطناعي وما احتاج لمراجعة بشرية.",["هوية بصرية وشعارات","منشورات وعروض تقديمية","واجهات مواقع وتطبيقات","نصوص إعلانية وقوالب محتوى"]],
+  ["التجارة الإلكترونية","المدفوعات الفعلية بتعتمد على مزود دفع مناسب للبلد.",["إنشاء المتاجر وكتالوج المنتجات","أوصاف وتصنيف المنتجات","تحليل المبيعات","أتمتة إجراءات الطلبات"]],
+  ["الأمن الرقمي والموثوقية","ضمن نطاق واضح ومصرح به. بدون ادعاء حماية كاملة أو شهادات ما حصلنا عليها.",["فحص إعدادات الأمان الأساسية","مراجعة الصلاحيات والحسابات","مراقبة توفر الخدمات","خطط النسخ الاحتياطي والاستعادة"]],
+  ["الخدمات متعددة اللغات","واجهة محلية لكل سوق، والدفع حسب المزودين المتاحين.",["العربية والإنجليزية","الإسبانية والفرنسية","الألمانية والتركية","لغات أخرى حسب الطلب"]]
+ ],
+ plans: {
+  skin: [
+   ["تنظيم متطلبات المشروع والسوق المستهدف","a",5],["دراسة أولية للسوق والمنافسين","a",4],["تخطيط الهوية البصرية وتصميم الشعار","p",5],
+   ["بناء المتجر وكتابة أوصاف المنتجات","a",6],["ربط مزود دفع مناسب للبلد","e",6],["خطة تسويق ولوحة لمراقبة النتائج","p",2]],
+  food: [
+   ["تجميع أسئلة الزبائن الشائعة وقائمة الطعام","a",0],["بناء وكيل خدمة عملاء بلهجة المطعم","a",0],["تصنيف الطلبات وتحويلها للفريق المناسب","a",3],
+   ["مراجعتك لأي رد حساس قبل إرساله","p",0],["تنبيه الموظفين عند وجود مشكلة","a",3],["تقرير أسبوعي بأداء الخدمة","a",3]],
+  gen: [
+   ["تنظيم المتطلبات وتحديد الهدف","a",4],["دراسة السوق والمنافسين","a",4],["اقتراح الأدوات والأقسام المناسبة","a",4],
+   ["تنفيذ الجزء الذي يمكن أتمتته","p",3],["مراجعة قانونية أو مالية عند الحاجة","e",4],["لوحة متابعة وتحسينات من البيانات","a",2]]
+ },
+ rules: ["لا نعد بمبيعات أو نتائج مضمونة. نقدم تحليلاً وخدمات قابلة للقياس.","لا ينفذ النظام تحويلات مالية أو قرارات حساسة بدون ضوابط وموافقة.","القرارات القانونية والمالية والاستثمارية الحساسة تُراجع عند مختص.","نبيع فقط ما نقدر ننفذه فعلاً، ونوضح ما هو آلي وما هو بشري.","استقبال المدفوعات يعتمد على مزود مناسب لكل بلد ونشاط."]
+},
+en: {
+ h1: "Orvanta: the AI-powered business ecosystem",
+ lead: "AI, software, automation, marketing, design and digital security on one platform. The services work together and give clients results they can measure.",
+
+ contactT: "Contact us", contactS: "Message us on WhatsApp and we will reply.", wa: "Message on WhatsApp", copy: "Copy number", copied: "Copied",
+ cta: "Try the Hub", howT: "How it works", priceT: "Pricing", priceS: "Try the first 3 days free, then $15 per month.", trial: "First 3 days free", faqT: "Frequently asked questions",
+ nav: [["#hub","The Hub"],["#depts","Departments"],["#how","How it works"],["#pricing","Pricing"],["#faq","FAQ"],["#contact","Contact"]],
+ how: [["Tell us your goal","Say what you want to achieve: a store, customer support or an app."],["We lay out the plan","The Hub assigns work to the right departments and marks what is automatic and what needs your approval."],["We build, you monitor","You follow every step and can stop any process at any time."],["We improve from data","We adjust the plan based on real results."]],
+ pricing: [["Professional Service","15","/month","Everything you need to run your business with AI.",["AI agents for customer support and sales","Smart automation for repeated tasks","Knowledge base from your documents","Permissions and human review when needed"],"Try free for 3 days",1]],
+ faq: [["Do you guarantee higher sales?","No. We provide analysis and measurable services, and improve from the results."],["Are sensitive decisions made automatically?","No. Financial transfers and sensitive decisions need your approval and clear controls."],["How are payments handled?","Through a payment provider suited to the client's country and business."],["Which languages are supported?","Arabic and English today, others on demand."]],
+ hubT: "Orvanta Intelligence Hub", hubS: "A client types a goal. The Hub lays out a plan across the right departments and shows what runs automatically, what needs approval and what needs a specialist.",
+ build: "Build the plan", ph: "Type a goal, for example: launch an online store", hubNote: "This illustrates the idea. It is not a live system yet.",
+ deptT: "Nine departments, one ecosystem", deptS: "We start with what sells best and add the rest in phases.",
+ rulesT: "What we commit to", foot: "Orvanta. Founding stage. This page is a vision and working plan, not a final commercial offer.",
+ aTag: "AUTO", pTag: "APPROVAL", eTag: "SPECIALIST",
+ chips: ["Skincare store for Europe", "Automated support for a restaurant"],
+ depts: [
+  ["Advanced AI","The core engine: specialist agents that hand tasks to each other with permissions and human review.",["AI agent builder","24/7 customer support","Sales assistant and lead follow-up","Knowledge base from company documents","Translation and localization"]],
+  ["Software and Digital Development","Complete digital products. We decide what we can deliver before we sell it.",["Websites and online stores","Dashboards and CRM systems","App integrations through APIs","Testing, performance and maintenance"]],
+  ["Marketing and Growth","Measurable analysis and services, with no guaranteed-sales promises.",["Marketing strategy and plans","Content and ad campaigns","SEO and landing pages","Competitor analysis and performance reports"]],
+  ["Smart Automation","A department we want to be known for. Clients monitor and can stop any process.",["Inquiry sorting and request routing","Follow-ups on the client's own rules","Automatic periodic reports","Data sync between apps"]],
+  ["Consulting and Business Development","For clients who do not know which tool they need.",["Business model analysis","Preliminary feasibility studies","Digital transformation planning","Executive reports for management"]],
+  ["Design and Creative","We show what AI produced and what needed human review.",["Brand identity and logos","Social posts and presentations","Website and app interfaces","Ad copy and content templates"]],
+  ["E-commerce","Real payments depend on a payment provider suited to each country.",["Store setup and product catalog","Product descriptions and categories","Sales analytics","Order process automation"]],
+  ["Digital Security and Reliability","Within a clear, authorized scope. We do not claim full protection or certifications we do not hold.",["Basic security settings checks","Permission and account review","Service uptime monitoring","Backup and recovery plans"]],
+  ["Multilingual Services","A local interface for each market, with payment by available providers.",["Arabic and English","Spanish and French","German and Turkish","More languages on demand"]]
+ ],
+ plans: {
+  skin: [
+   ["Organize project requirements and target market","a",5],["Preliminary market and competitor study","a",4],["Plan brand identity and design the logo","p",5],
+   ["Build the store and write product descriptions","a",6],["Connect a payment provider suited to the country","e",6],["Marketing plan and a results dashboard","p",2]],
+  food: [
+   ["Collect common customer questions and the menu","a",0],["Build a support agent in the restaurant's voice","a",0],["Sort orders and route them to the right staff","a",3],
+   ["You review any sensitive reply before it is sent","p",0],["Alert staff when something goes wrong","a",3],["Weekly report on service performance","a",3]],
+  gen: [
+   ["Organize requirements and define the goal","a",4],["Study the market and competitors","a",4],["Suggest the right tools and departments","a",4],
+   ["Run the part that can be automated","p",3],["Legal or financial review when needed","e",4],["Tracking dashboard and data-driven improvements","a",2]]
+ },
+ rules: ["We do not promise guaranteed sales or results. We offer analysis and measurable services.","The system does not make financial transfers or sensitive decisions without controls and approval.","Sensitive legal, financial and investment decisions are reviewed by a specialist.","We sell only what we can actually deliver, and we show what is automated and what is human.","Accepting payments depends on a provider suited to each country and business."]
+}};
+
+var lang = "ar";
+try { lang = localStorage.getItem("orv-lang") || "ar"; } catch (e) {}
+var planKey = "gen", goalText = "";
+var $ = function (id) { return document.getElementById(id); };
+function money(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+
+function drawRing() {
+  var s = $("ring"), h = "", cx = 160, cy = 160, r = 112, i, a, x, y;
+  h += '<circle class="orbit" cx="160" cy="160" r="112"/>';
+  for (i = 0; i < 9; i++) {
+    a = (Math.PI * 2 * i) / 9 - Math.PI / 2;
+    x = cx + r * Math.cos(a); y = cy + r * Math.sin(a);
+    h += '<line x1="160" y1="160" x2="' + x.toFixed(1) + '" y2="' + y.toFixed(1) + '"/>';
+  }
+  for (i = 0; i < 9; i++) {
+    a = (Math.PI * 2 * i) / 9 - Math.PI / 2;
+    x = cx + r * Math.cos(a); y = cy + r * Math.sin(a);
+    h += '<circle class="node" cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="17"/>';
+    h += '<text class="n" x="' + x.toFixed(1) + '" y="' + (y + 4).toFixed(1) + '">' + (i + 1) + '</text>';
+  }
+  h += '<circle class="core" cx="160" cy="160" r="38"/><text x="160" y="165">HUB</text>';
+  s.innerHTML = h;
+}
+
+function renderPlan() {
+  var t = L[lang], steps = t.plans[planKey], tags = { a: ["auto", t.aTag], p: ["approve", t.pTag], e: ["expert", t.eTag] };
+  var h = "", i, st;
+  for (i = 0; i < steps.length; i++) {
+    st = steps[i];
+    h += '<li><span>' + (i + 1) + '. ' + st[0] + '</span><span class="tag ' + tags[st[1]][0] + '">' + tags[st[1]][1] + '</span></li>';
+  }
+  $("plan").innerHTML = h;
+}
+
+function renderDepts() {
+  var t = L[lang], h = "", i, d, j;
+  for (i = 0; i < t.depts.length; i++) {
+    d = t.depts[i];
+    h += '<details' + (i === 0 ? ' open' : '') + '><summary><span class="idx">' + (i + 1) + '</span>' + d[0] + '</summary><p class="why">' + d[1] + '</p><ul>';
+    for (j = 0; j < d[2].length; j++) h += '<li>' + d[2][j] + '</li>';
+    h += '</ul></details>';
+  }
+  $("deptList").innerHTML = h;
+}
+
+function renderStatic() {
+  var t = L[lang], h = "", i;
+  var h2 = "";
+  for (i = 0; i < t.rules.length; i++) h += '<li>' + t.rules[i] + '</li>';
+  $("rulesList").innerHTML = h;
+  h = "";
+  for (i = 0; i < t.chips.length; i++) h += '<button type="button" class="chip" data-k="' + (i === 0 ? "skin" : "food") + '">' + t.chips[i] + '</button>';
+  $("chips").innerHTML = h;
+  h = "";
+  for (i = 0; i < t.nav.length; i++) h += '<a href="' + t.nav[i][0] + '">' + t.nav[i][1] + '</a>';
+  $("nav").innerHTML = h;
+  h = "";
+  for (i = 0; i < t.how.length; i++) h += '<li><div><h3>' + t.how[i][0] + '</h3><p>' + t.how[i][1] + '</p></div></li>';
+  $("howList").innerHTML = h;
+  h = "";
+  var pr, k, f;
+  for (i = 0; i < t.pricing.length; i++) {
+    pr = t.pricing[i]; f = "";
+    for (k = 0; k < pr[4].length; k++) f += '<li>' + pr[4][k] + '</li>';
+    h += '<div class="plan-card' + (pr[6] ? ' main' : '') + '"><h3>' + pr[0] + '</h3><div class="price">' + (pr[1] === "—" ? "—" : "$" + pr[1]) + (pr[2] ? ' <small>' + pr[2] + '</small>' : '') + '</div><div class="trial">' + t.trial + '</div><p>' + pr[3] + '</p><ul>' + f + '</ul></div>';
+  }
+  $("planList").innerHTML = h;
+  h = "";
+  for (i = 0; i < t.faq.length; i++) h += '<details><summary>' + t.faq[i][0] + '</summary><p class="why">' + t.faq[i][1] + '</p></details>';
+  $("faqList").innerHTML = h;
+}
+
+function applyLang() {
+  var t = L[lang], els = document.querySelectorAll("[data-i]"), i;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  for (i = 0; i < els.length; i++) els[i].textContent = t[els[i].getAttribute("data-i")];
+  $("goal").placeholder = t.ph;
+  $("langBtn").textContent = lang === "ar" ? "EN" : "عربي";
+  renderStatic(); renderDepts(); renderPlan();
+}
+
+$("langBtn").addEventListener("click", function () {
+  lang = lang === "ar" ? "en" : "ar";
+  try { localStorage.setItem("orv-lang", lang); } catch (e) {}
+  applyLang();
+});
+$("chips").addEventListener("click", function (e) {
+  var k = e.target.getAttribute && e.target.getAttribute("data-k");
+  if (!k) return;
+  planKey = k; $("goal").value = e.target.textContent; renderPlan();
+});
+$("hubForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  planKey = "gen"; renderPlan();
+});
+
+$("copyBtn").addEventListener("click", function () {
+  var b = this, num = "+963 997 179 644";
+  function done() { b.textContent = L[lang].copied; setTimeout(function () { b.textContent = L[lang].copy; }, 1500); }
+  try { navigator.clipboard.writeText(num).then(done, function () {}); } catch (e) {}
+});
+
+drawRing();
+planKey = "skin";
+applyLang();
+$("goal").value = L[lang].chips[0];
+</script>
+
+</body>
+</html>
